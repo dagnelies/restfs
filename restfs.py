@@ -48,12 +48,9 @@ def fullpath(path):
         return fp
 
 
-@app.get('')
-@app.get('/')
-@app.get('/<path:path>')
-@app.get('/<path:path>/')
-def get(path='', hidden=False):
-    
+@app.get('<path:path>')
+def get(path='', hidden=False, jstree=False):
+    path = path.strip('/')
     if not authorized(False, path):
         return bottle.Response(status=401) # TODO
         raise Exception('Unauthorized path: ' + path)
@@ -70,10 +67,22 @@ def get(path='', hidden=False):
                 continue
             p = os.path.join(fpath, name)
             item = {}
-            item['name'] = name
-            item['isdir'] = os.path.isdir(p)
-            item['size'] = os.path.getsize(p)
-            item['last_modified'] = time.ctime(os.path.getmtime(p))
+            
+            if jstree:
+                item['id'] = path + '/' + name
+                item['text'] = name
+                item['children'] = os.path.isdir(p)
+                if not item['children']:
+                    tokens = name.strip('.').split('.')
+                    if len(tokens) > 1:
+                        item['icon'] = '/ext/' + tokens[-1].lower() + '.png'
+                    else:
+                        item['icon'] = '/ext/file.png'
+            else:
+                item['name'] = name
+                item['isdir'] = os.path.isdir(p)
+                item['size'] = os.path.getsize(p)
+                item['last_modified'] = time.ctime(os.path.getmtime(p))
             listing.append( item )
             
         bottle.response.content_type = 'application/json'

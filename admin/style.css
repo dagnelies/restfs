@@ -1,0 +1,21 @@
+html, body {
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+}
+#container {
+    height: 100%;
+    display: flex;
+}
+
+#container > * {
+    overflow: auto;
+}
+
+#filetree {
+    flex: 1;
+}
+
+#editor { 
+    flex: 1;
+}

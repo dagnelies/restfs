@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="jstree/themes/default/style.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/ace/1.2.3/min/ace.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div style="display: flex; height: 100%;">
+    <div style="width: 300px; display:flex; flex-direction: column;">
+      <div>Copy, Paste, Move, Rename, Delete, Upload, Add</div>
+      <div id="filetree"></div>
+    </div>
+    <div style="flex:1; display:flex; flex-direction: column;">
+      <div>Refresh, Save, Download, Upload</div>
+      <div id="editor">hmmm</div>
+    </div>
+  </div>
+  <script>
+  var tree = $('#filetree').jstree({
+    core : {
+      data: {
+        url: function (node) {
+          return '/@files/'  + (node.id === '#' ? '' : node.id) + '?jstree=true';
+        }
+      }
+    },
+    plugins : [ "dnd" ],
+    dnd: {
+      use_html5: true
+    }
+  });
+  
+  var editor = ace.edit("editor");
+  
+  function onSelect(event, data) {
+    console.debug(data)
+    $.ajax({
+      url: '/@files/' + data.node.id,
+      success: updateEditor
+    })
+    //var modelist = ace.require("ace/ext/modelist")
+    //var mode = modelist.getModeForPath(data.node.text).mode
+    //editor.session.setMode(mode)
+  }
+  
+  function updateEditor(res) {
+    console.debug(res)
+    editor.setValue(res)
+  }
+  //editor.setTheme("ace/theme/monokai");
+  //editor.getSession().setMode("ace/mode/javascript");
+  tree.on('select_node.jstree', onSelect);
+  
+  var file_drop = document.body
+  file_drop.addEventListener(
+    'dragover',
+    function handleDragOver(evt) {
+      //evt.stopPropagation()
+      evt.preventDefault()
+      evt.dataTransfer.dropEffect = 'copy'
+    }
+  )
+  file_drop.addEventListener(
+    'drop',
+    function(evt) {
+      //evt.stopPropagation()
+      evt.preventDefault()
+      var files = evt.dataTransfer.files  // FileList object.
+      var file = files[0]                 // File     object.
+      alert(file.name)
+    }
+  )
+  
+  </script>
+</body>
+</html>
