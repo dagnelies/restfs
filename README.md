@@ -1,2 +1,5 @@
-# restfs
-A REST filesystem backend for python, using bottle
+RESTFS - RESTful Filesystem API
+===============================
+
+WEBFS - Browser interface for RESTFS
+====================================
