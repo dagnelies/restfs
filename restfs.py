@@ -49,7 +49,7 @@ def fullpath(path):
 
 
 @app.get('<path:path>')
-def get(path='', hidden=False, jstree=False):
+def get(path='', hidden=False):
     path = path.strip('/')
     if not authorized(False, path):
         return bottle.Response(status=401) # TODO
@@ -60,33 +60,21 @@ def get(path='', hidden=False, jstree=False):
     if os.path.isfile(fpath):
         return bottle.static_file(path, root=root)
     elif os.path.isdir(fpath):
-        files = os.listdir(fpath)
-        listing = []
-        for name in files:
+        files = []
+        for name in os.listdir(fpath):
             if not hidden and name[0] == '.':
                 continue
             p = os.path.join(fpath, name)
             item = {}
             
-            if jstree:
-                item['id'] = path + '/' + name
-                item['text'] = name
-                item['children'] = os.path.isdir(p)
-                if not item['children']:
-                    tokens = name.strip('.').split('.')
-                    if len(tokens) > 1:
-                        item['icon'] = '/ext/' + tokens[-1].lower() + '.png'
-                    else:
-                        item['icon'] = '/ext/file.png'
-            else:
-                item['name'] = name
-                item['isdir'] = os.path.isdir(p)
-                item['size'] = os.path.getsize(p)
-                item['last_modified'] = time.ctime(os.path.getmtime(p))
-            listing.append( item )
+            item['name'] = name
+            item['isdir'] = os.path.isdir(p)
+            item['size'] = os.path.getsize(p)
+            item['last_modified'] = time.ctime(os.path.getmtime(p))
+            files.append( item )
             
         bottle.response.content_type = 'application/json'
-        return json.dumps(listing)
+        return json.dumps({'path':path, 'files': files})
     else:
         raise Exception('No such path: ' + path)
 
