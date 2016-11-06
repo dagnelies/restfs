@@ -1,19 +1,17 @@
 /* global $ */
 /* global ace */
 
-var files_url = '/@files/'
-var views_url = '/@files/'
-var editor = null
-//var editor_container = $('#editor_container')
-var preview = null
-var tree = null
+var files_url = '/@files/';
+var editor = null;
+var preview = null;
+var tree = null;
 
-var modelist = ace.require("ace/ext/modelist")
+var modelist = ace.require("ace/ext/modelist");
 
 var DEFAULT_HANDLER = {
   "editor": false,
   "preview": false
-}
+};
 
 var handlers = {
   "application": {
@@ -52,10 +50,6 @@ var handlers = {
     "editor": false,
     "preview": false
   },
-  "multipart": {
-    "editor": false,
-    "preview": false
-  },
   "text": {
     "editor": true,
     "preview": false
@@ -68,18 +62,18 @@ var handlers = {
     "editor": false,
     "preview": true
   }
-}
+};
 
 function getHandler(mime_type) {
-  mime_type = mime_type.split(';')[0]
+  mime_type = mime_type.split(';')[0];
   if( mime_type in handlers )
-    return handlers[mime_type]
+    return handlers[mime_type];
     
-  mime_type = mime_type.split('/')[0]
+  mime_type = mime_type.split('/')[0];
   if( mime_type in handlers )
-    return handlers[mime_type]
+    return handlers[mime_type];
   
-  return DEFAULT_HANDLER
+  return DEFAULT_HANDLER;
 }
 
 function init() {
@@ -91,10 +85,10 @@ function init() {
         }
       },
       check_callback : function (operation, node, node_parent, node_position, more) {
-        console.log(operation)
-          // operation can be 'create_node', 'rename_node', 'delete_node', 'move_node' or 'copy_node'
-          // in case of 'rename_node' node_position is filled with the new node name
-          return operation === 'move_node' ? true : false;
+        console.debug(operation);
+        // operation can be 'create_node', 'rename_node', 'delete_node', 'move_node' or 'copy_node'
+        // in case of 'rename_node' node_position is filled with the new node name
+        return operation === 'move_node' ? true : false;
       },
       
     },
@@ -106,73 +100,81 @@ function init() {
 
   
   editor = ace.edit("editor");
-  preview = document.getElementById('preview')
+  preview = document.getElementById('preview');
   
-  tree.on('changed.jstree', onSelect)
+  tree.on('changed.jstree', onSelect);
   
 }
 
-$().ready(init)
+$().ready(init);
 
 function getExt(path) {
-  return path.split('/').pop().split('.').pop()
+  return path.split('/').pop().split('.').pop();
 }
 
-var text = []
-var binary = ['png']
 
 function onSelect(event, data) {
-  console.debug(data)
+  console.debug(data);
   
-  hidePreview()
-  hideEditor()
+  var is_leaf = data.instance.is_leaf(data.node); // it's crooky but I didn't made jstree's API
   
-  var path = data.node.id
-  var url = '/@files/' + path
+  hidePreview();
+  hideEditor();
   
+  var path = data.node.id;
+  var url = '/@files/' + path;
   
-  function onSuccess(res, a, xhr) {
-    console.debug(xhr)
-    showFile(url, xhr.getResponseHeader('content-type'), res)
-  }
-
   $.ajax({
     url: url,
     converters: null,
     dataFilter: null,
     dataType: 'text',
-    success: onSuccess
-  })
+    success: function(res, a, xhr) {
+      console.debug(xhr);
+      if( is_leaf ) {
+        var mime_type = xhr.getResponseHeader('content-type');
+        showFile(url, mime_type, res);
+      }
+      else {
+        var files = JSON.parse(res);
+        showDir(files);
+      }
+    }
+  });
 }
 
 function showFile(url, mime_type, data) {
-  console.debug(url)
-  console.debug(mime_type)
-  console.debug(text)
+  console.debug(url);
+  console.debug(mime_type);
+  console.debug(data);
   
-  var h = getHandler(mime_type)
+  var h = getHandler(mime_type);
   
   if( h.preview )
-    showPreview(url)
+    showPreview(url);
   
   if( h.editor )
-    showEditor(url, data)
+    showEditor(url, data);
+}
+
+
+function showDir(files) {
+  console.debug(files);
+  showEditor(".txt", files);
 }
 
 function hidePreview() {
-  preview.hidden = true //.hide()
+  preview.hidden = true;
 }
 
 function showPreview(url) {
-  preview.hidden = false //.show()
-  preview.src = url //prop('src', url)
+  preview.hidden = false;
+  preview.src = url;
 }
 
 function hideEditor() {
-  editor.setValue('', -1)
-  //editor_container.hide()
-  //editor.container.style.display = "none" 
-  editor.container.hidden = true
+  editor.setValue('', -1);
+  editor.container.hidden = true;
 }
 
 function showEditor(path, content) {
@@ -180,9 +182,8 @@ function showEditor(path, content) {
   var mode = modelist.getModeForPath(path).mode
   editor.session.setMode(mode)
   
-  //editor.container.style.display = "block" //show()
-  editor.container.hidden = false
-  editor.setValue(content, -1) // -1 to move the cursor at the start of file
+  editor.container.hidden = false;
+  editor.setValue(content, -1); // -1 to move the cursor at the start of file
   
 }
 
