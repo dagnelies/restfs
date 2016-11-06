@@ -15,13 +15,13 @@
     <script>
     $('#tt').tree({
         method: 'GET',
-        url: function(x) {console.warn(x); return '/@files';},
+        url: '/@files', //function(x) {console.warn(x); return '/@files';},
         /*loader: function(param,success,error) {
             console.log(param)  
         },*/
         loadFilter: function(res){
             console.log(res)
-            nodes = res.files.map( function(n) {return { id : res.path + '/' + n.name, text: n.name, state: "closed" };} )
+            nodes = res.map( function(n) {return { id : res.path + '/' + n.name, text: n.name, state: n.isdir ? "closed" : "" };} )
             console.log(nodes)
             return nodes
         }
