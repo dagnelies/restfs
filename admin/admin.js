@@ -102,6 +102,9 @@ function init() {
   editor = ace.edit("editor");
   preview = document.getElementById('preview');
   
+  hidePreview();
+  hideEditor();
+  
   tree.on('changed.jstree', onSelect);
   
 }
