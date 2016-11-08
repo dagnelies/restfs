@@ -99,11 +99,14 @@ function init() {
   });
 
   
-  editor = ace.edit("editor");
+  editor = ace.edit('editor');
   preview = document.getElementById('preview');
   
   hidePreview();
   hideEditor();
+  
+  /* global Split */
+  Split(['#left_panel', '#center_panel']);
   
   tree.on('changed.jstree', onSelect);
   

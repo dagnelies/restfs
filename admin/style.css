@@ -19,15 +19,37 @@ body {
     display: flex;
 }
 
-#filetree {
+#left_panel {
     width: 300px;
     overflow: auto;
 }
 
-#editor { 
+#center_panel { 
     flex: 1;
 }
 
-#preview {
-    flex: 1;
+#preview { 
+    width: 100%;
+    height: 100%;
+}
+
+#editor {
+    height: 100%;
+}
+
+.gutter {
+  background-color: #eee;
+
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.gutter.gutter-horizontal {
+  background-image: url('grips/vertical.png');
+  cursor: ew-resize;
+}
+
+.gutter.gutter-vertical {
+  background-image: url('grips/horizontal.png');
+  cursor: ns-resize;
 }

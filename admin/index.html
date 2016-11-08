@@ -18,6 +18,7 @@
   <script src="jstree/jstree.js"></script>
   <script src="https://cdn.jsdelivr.net/ace/1.2.4/min/ace.js"></script>
   <script src="https://cdn.jsdelivr.net/ace/1.2.4/min/ext-modelist.js"></script>
+  <script src="split.min.js"></script>
   <script src="admin.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -25,27 +26,29 @@
   <div style="background-color:#ddd; padding:10px;">
       LOGO Title
   
-      <button class="btn btn-default"><i class="glyphicon glyphicon-file"></i> New file</button>
-      <button class="btn btn-default">New directory</button>
+      <button class="btn btn-default"><i class="glyphicon glyphicon-file"></i><br/>New file</button>
+      <button class="btn btn-default"><i class="glyphicon glyphicon-file"></i><br/>New directory</button>
       
-      <button class="btn btn-default">Rename</button>
+      <button class="btn btn-default"><i class="glyphicon glyphicon-pencil"></i><br/>Rename</button>
       <button class="btn btn-default">Copy</button>
       <button class="btn btn-default">Paste</button>
       <button class="btn btn-default">Delete</button>
       
+      <button class="btn btn-default"><i class="glyphicon glyphicon-eye-open"></i><br/>HTTP View</button>
       <button class="btn btn-default">Download</button>
       <button class="btn btn-default">Upload</button>
+      
   </div>
   <div id="content">
-    <div style="border-right: 5px solid gray;">
+    <div id="left_panel">
       <div id="filetree"></div>
     </div>
-    <div id="editor"></div>
-    <div id="directory">
+    <div id="center_panel">
+      <div id="editor"></div>
       <div id="listing"></div>
       <div id="gallery"></div>
+      <iframe id="preview"></iframe>
     </div>
-    <iframe id="preview"></iframe>
   </div>
 </body>
 </html>
