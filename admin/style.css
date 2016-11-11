@@ -14,6 +14,21 @@ body {
     flex-direction: column;
 }
 
+#toolbar {
+    background-color:#eee;
+    padding:5px;
+}
+
+#toolbar .btn img {
+    width: 24px;
+    height: 24px;
+}
+
+
+#toolbar .btn-group {
+    margin: 0px 10px;
+}
+
 #content {
     flex:1;
     display: flex;
@@ -26,6 +41,11 @@ body {
 
 #center_panel { 
     flex: 1;
+    overflow: auto;
+}
+
+#listing {
+    padding: 10px;
 }
 
 #preview { 
@@ -36,6 +56,10 @@ body {
 #editor {
     height: 100%;
 }
+
+
+
+
 
 .gutter {
   background-color: #eee;

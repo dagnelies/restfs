@@ -2,9 +2,13 @@
 /* global ace */
 
 var files_url = '/@files/';
+
+var tree = null;
+
+var listing = null;
 var editor = null;
 var preview = null;
-var tree = null;
+
 
 var modelist = ace.require("ace/ext/modelist");
 
@@ -98,15 +102,17 @@ function init() {
     }
   });
 
-  
+  listing = document.getElementById('listing');
   editor = ace.edit('editor');
   preview = document.getElementById('preview');
   
-  hidePreview();
+  hideListing();
   hideEditor();
+  hidePreview();
+  
   
   /* global Split */
-  Split(['#left_panel', '#center_panel']);
+  Split(['#left_panel', '#center_panel'], {sizes: [20, 80]});
   
   tree.on('changed.jstree', onSelect);
   
@@ -114,9 +120,19 @@ function init() {
 
 $().ready(init);
 
-function getExt(path) {
-  return path.split('/').pop().split('.').pop();
+function getIcon(file) {
+  return '<img src="ext/' + getExt(file) + '.png" />';
 }
+
+
+function getExt(file) {
+  if( file.isdir )
+    return 'Directory';
+  
+  var ext = file.name.split('/').pop().split('.').pop();
+  return ext.toLowerCase();
+}
+
 
 
 function onSelect(event, data) {
@@ -124,6 +140,7 @@ function onSelect(event, data) {
   
   var is_leaf = data.instance.is_leaf(data.node); // it's crooky but I didn't made jstree's API
   
+  hideListing();
   hidePreview();
   hideEditor();
   
@@ -166,7 +183,29 @@ function showFile(url, mime_type, data) {
 
 function showDir(files) {
   console.debug(files);
-  showEditor(".txt", files);
+  showListing(files);
+}
+
+function showListing(files) {
+  $('#listing-table').DataTable( {
+        destroy: true, // erases content if already initialized
+        data: files,
+        paging: false,
+        select: true,
+        columns: [
+            { orderable: false, render: function(data, type, row) { return getIcon(row); } },
+            { data: "name", title: "Name" },
+            { title: "Type", render: function(data, type, row) { return getExt(row); }  },
+            { data: "last_modified", title: "Last modified" },
+            { data: "size", title: "Size"}
+        ]
+    } );
+    listing.hidden = false;
+}
+
+function hideListing() {
+  
+  listing.hidden = true;
 }
 
 function hidePreview() {
@@ -185,8 +224,8 @@ function hideEditor() {
 
 function showEditor(path, content) {
   
-  var mode = modelist.getModeForPath(path).mode
-  editor.session.setMode(mode)
+  var mode = modelist.getModeForPath(path).mode;
+  editor.session.setMode(mode);
   
   editor.container.hidden = false;
   editor.setValue(content, -1); // -1 to move the cursor at the start of file

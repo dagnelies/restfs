@@ -4,51 +4,81 @@
   <meta charset="utf-8">
   
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  
-  <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-  
-  
-  <link rel="stylesheet" href="jstree/themes/default/style.min.css" />
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
-  <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-  <script src="jstree/jstree.js"></script>
-  <script src="https://cdn.jsdelivr.net/ace/1.2.4/min/ace.js"></script>
-  <script src="https://cdn.jsdelivr.net/ace/1.2.4/min/ext-modelist.js"></script>
-  <script src="split.min.js"></script>
-  <script src="admin.js"></script>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    .xvideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -100;
+  }
+  </style>
 </head>
 <body>
-  <div style="background-color:#ddd; padding:10px;">
-      LOGO Title
-  
-      <button class="btn btn-default"><i class="glyphicon glyphicon-file"></i><br/>New file</button>
-      <button class="btn btn-default"><i class="glyphicon glyphicon-file"></i><br/>New directory</button>
-      
-      <button class="btn btn-default"><i class="glyphicon glyphicon-pencil"></i><br/>Rename</button>
-      <button class="btn btn-default">Copy</button>
-      <button class="btn btn-default">Paste</button>
-      <button class="btn btn-default">Delete</button>
-      
-      <button class="btn btn-default"><i class="glyphicon glyphicon-eye-open"></i><br/>HTTP View</button>
-      <button class="btn btn-default">Download</button>
-      <button class="btn btn-default">Upload</button>
-      
-  </div>
-  <div id="content">
-    <div id="left_panel">
-      <div id="filetree"></div>
+  <div class="container">
+    <center><h1>S<sup>3</sup>FTP: simple, secure, swift.</h1></center>
+    <br/>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <div class="jumbotron">
+          <form>
+            <div class="form-group">
+              <label>FTP Address</label>
+              <input class="form-control" placeholder="ftp(s)://...">
+            </div>
+            <div class="form-group">
+              <label>Username</label>
+              <input class="form-control" placeholder="anonymous">
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" class="form-control">
+            </div>
+            <br/>
+            <a href="admin.html" class="btn btn-primary btn-block">Connect</a>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-3"></div>
     </div>
-    <div id="center_panel">
-      <div id="editor"></div>
-      <div id="listing"></div>
-      <div id="gallery"></div>
-      <iframe id="preview"></iframe>
-    </div>
+    
+    <hr/>
+    
+    <h2>Screenshots</h2>
+    
+    <hr/>
+    
+    <h2>Embed it</h2>
+    
+    <p>You can embedd it into your own website by simply providing an iframe.</p>
+    
+    <pre>&lt;iframe src="https://..."&gt;&lt;iframe&gt;</pre>
+    
+    <p>If you want to avoid the login screen, you can use the "indirect authentication" feature.</p>
+    
+    <p>First, make a server side POST call to <code>https://.../token?ftp=...&username=...&password=...</code> to obtain an access token.</p>
+    
+    <p>Then, provide the access token instead of the creditentials in the iframe.</p>
+    
+    <pre>&lt;iframe src="https://.../connect?token=..."&gt;&lt;iframe&gt;</pre>
+    
+    <hr/>
+    
+    <h2>Community</h2>
+    
+    To discuss features, report bugs or contribute, check the github <a href="#">repository</a>.
+    
+    <br/>
+    <br/>
+    <br/>
+    
   </div>
 </body>
 </html>
