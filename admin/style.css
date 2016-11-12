@@ -45,7 +45,7 @@ body {
 }
 
 #listing {
-    padding: 10px;
+    padding: 5px;
 }
 
 #preview { 
@@ -77,3 +77,14 @@ body {
   background-image: url('grips/horizontal.png');
   cursor: ns-resize;
 }
+
+/*
+table.dataTable tbody>tr.selected, table.dataTable tbody>tr>.selected {
+    background-color: #beebff !important;
+}
+*/
+/*
+.jstree-default .jstree-clicked {
+    background: #B0BED9;
+}
+*/

@@ -191,6 +191,7 @@ function showListing(files) {
         destroy: true, // erases content if already initialized
         data: files,
         paging: false,
+        //searching: false,
         select: true,
         columns: [
             { orderable: false, render: function(data, type, row) { return getIcon(row); } },
