@@ -16,8 +16,8 @@ if __name__ == '__main__':
     #    print('Usage: %s <path-to-serve>' % os.path.basename(args[0]))
     #root = os.path.abspath(args[1])
     #root = os.getcwd()
-    import fs2http
-    app.mount('@files', fs2http.app)
+    import isys
+    app.mount('@files', isys.app)
     
     
     app.run(debug=True, host='0.0.0.0')

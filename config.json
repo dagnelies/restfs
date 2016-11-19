@@ -1,0 +1,7 @@
+{
+    "root": "www",
+    "users": [{
+        "username": "demo",
+        "password": "demo"
+    }]
+}

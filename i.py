@@ -1,22 +1,18 @@
 """
-REST File Server
-================
-
 Operations:
-get - GET /path/to/file => returns the file
-get - GET /path/to/dir => returns the dir's content as json list
-set -
-upload - path can be dir, or existing file with "override=true"
-mkdir - create single dir
-copy - to=...
-move - to=...
-delete - DELETE
-info - HEAD
+P - login
 
-Authentication?
-- public read: true/false
-- write: username/password
-- callback
+G - list - list the dir's content
+G - read - reads a file
+G - info - infos about a file
+
+P - write - writes a file
+P - mkdir - makes a dir
+P - copy - to=...
+P - move - to=...
+P - delete - DELETE
+
+P - logout
 """
 
 import canister

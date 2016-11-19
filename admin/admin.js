@@ -9,6 +9,7 @@ var listing = null;
 var editor = null;
 var preview = null;
 
+var CWD = '/'; // current working directory
 
 var modelist = ace.require("ace/ext/modelist");
 
@@ -82,11 +83,40 @@ function getHandler(mime_type) {
 
 function init() {
   tree = $('#filetree').jstree({
-    core : {
+    core : {/*
       data: {
         url: function (node) {
           return files_url  + (node.id === '#' ? '' : node.id) + '?jstree=true';
         }
+      },*/
+      data: function(node, callback) {
+        if( node.id === '#' ) {
+          var root = {
+              id: '/',
+              text: '/',
+              children: true,
+              icon: getIconPath({'type': 'dir'})
+            };
+            callback([root]);
+            return;
+        }
+        var path = node.id === '#' ? '' : node.id;
+        var url = files_url + 'list?path=' + path;
+        function files2nodes(files) {
+          var nodes = [];
+          for( var i=0; i<files.length; i++ ) {
+            var f = files[i];
+            var n = {
+              id: path + '/' + f.name,
+              text: f.name,
+              children: (f.type === 'dir'),
+              icon: getIconPath(f)
+            };
+            nodes.push(n);
+          }
+          callback(nodes);
+        }
+        $.get(url, null, files2nodes, 'json');
       },
       check_callback : function (operation, node, node_parent, node_position, more) {
         console.debug(operation);
@@ -120,17 +150,20 @@ function init() {
 
 $().ready(init);
 
-function getIcon(file) {
-  return '<img src="ext/' + getExt(file) + '.png" />';
-}
-
-
 function getExt(file) {
-  if( file.isdir )
+  if( file.type === 'dir' )
     return 'Directory';
   
   var ext = file.name.split('/').pop().split('.').pop();
   return ext.toLowerCase();
+}
+
+function getIconPath(file) {
+  return '/ext/' + getExt(file) + '.png';
+}
+
+function getIconImg(file) {
+  return '<img src="' + getIconPath(file) + '" />';
 }
 
 
@@ -144,8 +177,8 @@ function onSelect(event, data) {
   hidePreview();
   hideEditor();
   
-  var path = data.node.id;
-  var url = '/@files/' + path;
+  CWD = data.node.id;
+  var url = '/@files/' + (is_leaf ? 'read' : 'list') + '?path=' + CWD;
   
   $.ajax({
     url: url,
@@ -194,7 +227,7 @@ function showListing(files) {
         //searching: false,
         select: true,
         columns: [
-            { orderable: false, render: function(data, type, row) { return getIcon(row); } },
+            { orderable: false, render: function(data, type, row) { return getIconImg(row); } },
             { data: "name", title: "Name" },
             { title: "Type", render: function(data, type, row) { return getExt(row); }  },
             { data: "last_modified", title: "Last modified" },
@@ -231,6 +264,26 @@ function showEditor(path, content) {
   editor.container.hidden = false;
   editor.setValue(content, -1); // -1 to move the cursor at the start of file
   
+}
+
+function addDir() {
+  var name = prompt("Dir name?");
+  var url = files_url + 'mkdir?path=' + CWD + '/' + name;
+  $.post(url);
+}
+
+function addFile() {
+  var name = prompt("Dir name?");
+  var url = files_url + 'write?path=' + CWD + '/' + name;
+  $.post(url);
+}
+
+
+function update() {
+  // update relative to CWD
+  // updates tree
+  // updates listing if shown
+  // updates gallery if shown
 }
 
 /*
