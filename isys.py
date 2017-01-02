@@ -64,10 +64,9 @@ def login(username, password):
     
 @app.get('/list')
 def list(path='', hidden=False):
-    print(session.data['user'])
     if 'user' not in session.data:
         raise Exception('Please login first')
-        
+    
     global root
     fpath = fullpath(path)
     

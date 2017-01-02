@@ -79,7 +79,7 @@ def get(path='', hidden=False, jstree=False):
                         item['icon'] = '/ext/file.png'
             else:
                 item['name'] = name
-                item['isdir'] = os.path.isdir(p)
+                item['type'] =  'dir' if os.path.isdir(p) else 'file'
                 item['size'] = os.path.getsize(p)
                 item['last_modified'] = time.ctime(os.path.getmtime(p))
                 

@@ -1,5 +1,6 @@
 import bottle
 import sys
+import restfs
 
 app = bottle.Bottle()
 
@@ -17,7 +18,7 @@ if __name__ == '__main__':
     #root = os.path.abspath(args[1])
     #root = os.getcwd()
     import isys
-    app.mount('@files', isys.app)
+    app.mount('@files', restfs.app)
     
     
     app.run(debug=True, host='0.0.0.0')
