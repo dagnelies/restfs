@@ -18,7 +18,7 @@ if __name__ == '__main__':
     #root = os.path.abspath(args[1])
     #root = os.getcwd()
     import isys
-    app.mount('@files', restfs.app)
+    app.mount('@api', restfs.app)
     
     
     app.run(debug=True, host='0.0.0.0')
