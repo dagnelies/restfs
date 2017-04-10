@@ -1,0 +1,16 @@
+[{
+	"text":"Folder A",
+	"state":"closed"
+},{
+	"text":"Folder B",
+	"state":"closed"
+},{
+	"text":"Folder C",
+	"state":"closed"
+},{
+	"text":"File X"
+},{
+	"text":"File Y"
+},{
+	"text":"File Z"
+}]

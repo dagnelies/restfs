@@ -1,0 +1,124 @@
+/* fullscreen layout */
+html, body {
+	font-family: Helvetica;
+	height: 100%;
+	padding: 0px;
+	margin: 0px;
+}
+
+img {
+	vertical-align: middle;
+}
+
+/* HEADER */
+
+#header {
+	background-color: #eee;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 58px;
+}
+
+#header > * {
+	padding: 5px;
+}
+
+/* title & logo */
+
+
+.logo {
+	position: relative;
+	height: 48px;
+	width: 48px;
+	z-index: 1;
+}
+
+.title {
+	vertical-align: middle;
+	background-color: #666;
+	/*background-color: #0092DC;*/
+	font-family: impact;
+	font-size: 20px;
+	color: #fff;
+	padding: 1px 10px 1px 20px;
+	margin-left: -10px;
+	text-decoration: none;
+	transition: background-color ease 0.5s;
+}
+
+.logo-link:hover > span {
+	background-color: #0092DC;
+}
+
+
+ /* Icons List */
+ 
+.tile {
+	display: inline-block;
+	height: auto !important;
+	width: 100px;
+	margin: 1px;
+}
+
+.tile td {
+	display: flex;
+	border: 0px;
+	justify-content: center;
+}
+
+.tile img {
+	width: 80px;
+	height: 80px;
+}
+/*
+.toolbar img {
+	height: 24px;
+	width: 24px;
+}
+*/
+/* fixing images inside buttons */
+.easyui-linkbutton img {
+	margin: 5px;
+}
+
+
+/* mobile theme fix: full header cell is clickable */
+.datagrid-header .datagrid-cell {
+	line-height: 34px;
+}
+/* mobile theme: tree nodes as big as grid rows */
+.datagrid-row, .datagrid-header-row {
+	height: 28px;
+}
+/*
+.tree-node {
+	height: 35px;
+}
+.tree-node > span {
+	line-height: 20px;
+	margin: 1px;
+}
+*/
+
+/* mobile theme fix: editted tree cell centered */
+.tree-editor {
+	top: 5px;
+}
+
+/* mobile theme fix: tabs have same height as title bars */
+.tabs-inner {
+	height: 33px;
+	line-height: 33px;
+}
+
+/* mobile theme fix: show closing "X" in dialogs */
+.window-header .panel-tool {
+    display: initial;
+    padding-right: 7px;
+}
+ 
+/* remove side borders in file list */
+.without-side-borders td {
+	border-width: 0 0px 1px 0;
+}

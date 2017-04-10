@@ -1,0 +1,30 @@
+
+ui look:
+	tree lines?
+	grid lines?
+	condensed?
+	icons: colored, black, white
+ui:
+	theme
+	logo
+	title
+	language
+	icons
+	
+mode: explorer/IDE
+	explorer:
+		- only dirs in tree
+		- listing in middle pane
+		- code or preview in right pane
+	IDE:
+		- dirs & files
+		- code in middle pane
+		- preview in right pane
+
+protocol: 
+host: bzz
+port: 
+username:
+password:
+
+plugins:

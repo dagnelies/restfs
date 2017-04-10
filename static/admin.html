@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	
+	<link rel="stylesheet" type="text/css" href="libs/easyui/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="libs/easyui/themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="libs/easyui/themes/mobile.css">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	
+	<script type="text/javascript" src="libs/easyui/jquery.min.js"></script>
+	<script type="text/javascript" src="libs/easyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="libs/easyui/datagrid-dnd.js"></script>
+	<!--script type="text/javascript" src="libs/easyui/jquery.etree.js"></script>
+	<script type="text/javascript" src="libs/easyui/jquery.edatagrid.js"></script-->
+	
+	<script type="text/javascript" src="js/cache.js"></script>
+	<script type="text/javascript" src="js/admin.js"></script>
+	<script type="text/javascript" src="js/extensions.js"></script>
+	<script type="text/javascript" src="js/commands.js"></script>
+	<script type="text/javascript" src="js/tree.js"></script>
+	<script type="text/javascript" src="js/list.js"></script>
+	
+	<script src="https://cdn.jsdelivr.net/ace/1.2.6/min/ace.js"></script>
+
+</head>
+<body>
+	<style id="datagrid-dnd-style">/* this style is here to override the defaults */</style>
+	
+		<div style="display:none">
+		
+			<form id="upload-form" enctype="multipart/form-data">
+				<input id="upload-input" name="file" type="file" onchange="do_upload(this.files)" multiple />
+			</form>
+			
+			<div id="upload-dlg" class="easyui-dialog" title="Upload" modal="true" closed="true" style="width:50%;height:50%;padding:10px">
+		        Drop files here to upload to:
+		        /root/some long folder name/and/deeply/nested
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        <p id="p" class="easyui-progressbar" value="55" text="filename.txt" height="35"></p>
+		        
+		        
+		    </div>
+		    
+			<div id="mm" class="easyui-menu" style="width:120px;">
+				<div>Download</div>
+				<div>
+					<span>New</span>
+					<div>
+						<div>File</div>
+						<div>Directory</div>
+					</div>
+				</div>
+				<div class="menu-sep"></div>
+				<div>Rename</div>
+				<div>Copy</div>
+				<div>Paste</div>
+				<div class="menu-sep"></div>
+				<div>Delete</div>
+			</div>
+			
+			<div id="donation-dlg" class="easyui-dialog" title="Support us!" modal="true" closed="true" style="width:50%;height:50%;padding:10px">
+		        If you like it, consider a small donation! ...and get rid of this annoying ad. Thanks.
+		    </div>
+		    
+		</div>
+	<div class="easyui-layout" style="width:100%;height:100%;">
+		<div id="header" data-options="region:'north', border:false">
+		
+			<span class="toolbar">
+				<span class="m-buttongroup">
+					<button class="easyui-linkbutton easyui-tooltip" onclick="addFile()" title="New file"><img src="img/fatcow/page_add.png"/></button>
+					<button class="easyui-linkbutton easyui-tooltip" onclick="addDir()" title="New directory"><img src="img/fatcow/folder_add.png" /></button>
+				</span>
+	
+				<button class="easyui-linkbutton easyui-tooltip" onclick="refresh()" title="Refresh"><img src="img/fatcow/arrow_refresh.png" /></button>
+				
+				<span class="m-buttongroup">
+					<button class="easyui-linkbutton easyui-tooltip" title="Rename"><img src="img/fatcow/textfield_rename.png" /></button>
+					<button class="easyui-linkbutton easyui-tooltip" title="Copy"><img src="img/fatcow/page_copy.png" /></button>
+					<button class="easyui-linkbutton easyui-tooltip" title="Paste"><img src="img/fatcow/page_paste.png" /></button>
+				</span>
+				<span class="m-buttongroup">
+					<button class="easyui-linkbutton easyui-tooltip" title="Download"><img src="img/fatcow/inbox_download.png" /></button>
+					<button class="easyui-linkbutton easyui-tooltip" onclick="upload()" title="Upload"><img src="img/fatcow/inbox_upload.png" /></button>
+					<button class="easyui-linkbutton easyui-tooltip" title="Delete"><img src="img/fatcow/cross.png" /></button>
+				</span>
+				
+  			</span>
+  			
+  			<a class="logo-link" href="login.html" target="_blank">
+	  			<img class="logo" src="img/logo.png" />
+				<span class="title">Online FTP</span>
+			</a>
+  			<span>
+				<button class="easyui-linkbutton easyui-tooltip" title="Disconnect"><img src="img/fatcow/door_in.png" /></button>
+			</span>
+		</div>
+		<div data-options="region:'west',split:true" title="user@some-ftp-server.com" collapsible=false style="width:20%;min-width:200px;">
+			<ul id="dir_tree" onkeypress="console.log(event)"></ul>
+		</div>
+		<div data-options="region:'center'">
+			<div class="easyui-tabs" data-options="fit:true,border:false,tabHeight:35">
+				<div title="List">
+					<table id="file_list">
+						<thead>
+							<tr>
+								<th field='itemid' align="center" width="32px" formatter="getIconImg"></th>
+								<th field='name' align="left" width="200px" sortable=true editor="text">Name</th>
+								<th field='size' align="center" width="50px" sortable=true>Size</th>
+								<th field='last_modified' align="center" width="100px" sortable=true formatter="timestamp2date">Last modified</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div title="Icons" style="padding:5px">
+					<table id="icons_list" class="icongrid">
+						<thead>
+							<tr>
+								<th field='itemid' align="center" formatter="getIconImg"></th>
+								<th field='name' align="center" editor="text">Name</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+				<div title="Thumbnails" style="padding:5px">
+					<img src="img/gallery.png" />
+				</div>
+			</div>
+		</div>
+		<div data-options="region:'east',split:true" title="View/Edit" style="width:20%;">
+			
+			<iframe id="file_view" hidden style="width:100%;height:100%;border:0;vertical-align:bottom;"></iframe>
+			
+			
+			<div id="editor" hidden style="height:100%;"></div>
+			
+			<footer>
+				<button class="easyui-linkbutton"  style="width:100%;" iconCls="icon-save">Save</button>
+			</footer>
+	        <!-- footer>
+	        <div class="m-buttongroup" style="width:100%">
+	            <button class="easyui-linkbutton easyui-tooltip" title="Download" disabled style="width:50%;"><img src="img/fatcow/save.png" /> Save</button>
+	            <button class="easyui-linkbutton easyui-tooltip" title="Download" style="width:50%;"><img src="img/fatcow/arrow_refresh.png" /> Reload</button>
+	        </div>
+	        </footer-->
+		</div>
+		<div data-options="region:'south',split:true" border=false style="height:35px; background-color:#eee; padding: 5px 10px 10px 10px;">
+			<span style="float:right">Powered by online-ftp.net</span>
+			<span id="status">Initializing...</span>
+		</div>
+		
+	</div>
+	
+</body>
+</html>
