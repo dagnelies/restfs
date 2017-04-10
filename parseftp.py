@@ -1,3 +1,5 @@
+import dateutil.parser
+import sys
 
 
 def parseList(raw):
@@ -34,3 +36,48 @@ def parseLine(line):
     size = tokens[4]
     modified = tokens[5:8]
     name = tokens[8:]
+    
+    modified = str(dateutil.parser.parse(' '.join(modified)))
+    print(modified)
+
+from ftplib import FTP
+
+#ftp = FTP('ftp.cluster020.hosting.ovh.net')
+#ftp.login('moviesalmu-ftp','asdASD123')
+
+print('Hi!')
+#ftp.retrlines('FEAT') 
+
+#ftp = FTP('ftp.mozilla.org')
+ftp = FTP('test.talia.net')
+#ftp = FTP('ftp.uni-koeln.de')     # connect to host, default port
+ftp.login()        # user anonymous, passwd anonymous@
+
+try:
+    files = list(ftp.mlsd())
+except:
+    print('mlsd failed')
+    files = []
+
+for f in files:
+    print(f)
+
+ftp.quit()
+sys.exit()
+
+
+a = ftp.dir('/debian', parseList)           # list directory contents
+print('-----------LISTING DONE-------------')
+
+file = '/debian/README.mirrors.html'
+s = ftp.size(file)
+d = 0
+def download(b):
+    global d
+    d += len(b)
+    #print('%d%%' % (100*d/s))
+    
+ftp.retrbinary('RETR ' + file, download)
+print('-----------DOWNLOAD DONE-------------')
+
+ftp.quit()

@@ -65,30 +65,16 @@ def get(path='', hidden=False, jstree=False):
             if not hidden and name[0] == '.':
                 continue
             p = os.path.join(fpath, name)
-            item = {}
-            
-            if jstree:
-                item['id'] = path + '/' + name
-                item['text'] = name
-                item['children'] = os.path.isdir(p)
-                if not item['children']:
-                    tokens = name.strip('.').split('.')
-                    if len(tokens) > 1:
-                        item['icon'] = '/ext/' + tokens[-1].lower() + '.png'
-                    else:
-                        item['icon'] = '/ext/file.png'
-            else:
-                item['name'] = name
-                item['type'] =  'dir' if os.path.isdir(p) else 'file'
-                item['size'] = os.path.getsize(p)
-                item['last_modified'] = time.ctime(os.path.getmtime(p))
-                
+            item = {
+                'name': name,
+                'type': 'dir' if os.path.isdir(p) else 'file',
+                'is_directory': os.path.isdir(p),
+                'size': os.path.getsize(p),
+                'last_modified': time.ctime(os.path.getmtime(p))
+            }
             listing.append( item )
-            
-            if jstree:
-                listing.sort(key=lambda x: x['text'])
-            else:
-                listing.sort(key=lambda x: x['name'])
+        
+        listing.sort(key=lambda x: x['name'])
             
         bottle.response.content_type = 'application/json'
         return json.dumps(listing)
