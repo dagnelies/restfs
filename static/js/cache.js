@@ -8,7 +8,7 @@ cache.get = function(path, success, failure) {
 	}
 	else {
 		console.log('Fetching ' + path + ' into cache');
-		$.get('@files/list', {path: path}, function(data) {
+		$.get('@api/list', {path: path}, function(data) {
 			console.log(data);
 			cache.internal[path] = data;
 			success( data );

@@ -42,16 +42,16 @@ def parseLine(line):
 
 from ftplib import FTP
 
-#ftp = FTP('ftp.cluster020.hosting.ovh.net')
-#ftp.login('moviesalmu-ftp','asdASD123')
+ftp = FTP('ftp.cluster020.hosting.ovh.net')
+ftp.login('moviesalmu-ftp','asdASD123')
 
-print('Hi!')
+print('Hi2!')
 #ftp.retrlines('FEAT') 
 
 #ftp = FTP('ftp.mozilla.org')
-ftp = FTP('test.talia.net')
+#ftp = FTP('test.talia.net')
 #ftp = FTP('ftp.uni-koeln.de')     # connect to host, default port
-ftp.login()        # user anonymous, passwd anonymous@
+#ftp.login()        # user anonymous, passwd anonymous@
 
 try:
     files = list(ftp.mlsd())
