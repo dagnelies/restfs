@@ -5,9 +5,13 @@ REST File Server
 Operations:
 get - GET /path/to/file => returns the file
 get - GET /path/to/dir => returns the dir's content as json list
-set -
-upload - path can be dir, or existing file with "override=true"
+read
+download - if a file, same as /read, if a dir, makes a zip out of it
+list - lists a directory content
+write - Writes the content in a single file
+upload - can upload multiple files, path can be dir, or existing file with "overwrite=true"
 mkdir - create single dir
+mkfile - creates an empty file
 copy - to=...
 move - to=...
 delete - DELETE
@@ -54,6 +58,12 @@ def fullpath(path):
     else:
         return fp
 
+def checkuser():
+    #if 'user' not in session.data:
+    #    raise Exception('Please login first')
+    pass
+
+
 @app.route('/login')
 def login(username, password):
     if username in users:
@@ -64,10 +74,7 @@ def login(username, password):
     
 @app.get('/list')
 def list(path='', hidden=False):
-    if 'user' not in session.data:
-        raise Exception('Please login first')
-    
-    global root
+    checkuser()
     fpath = fullpath(path)
     
     if not os.path.exists(fpath):
@@ -97,14 +104,14 @@ def list(path='', hidden=False):
         listing.sort(key=lambda x: (x['type'], x['name']) )
         
     bottle.response.content_type = 'application/json'
-    return json.dumps(listing)
+    return json.dumps({'path':path,'files':listing})
         
 
 
 @app.get('/read')
+@app.get('/download')
 def read(path='', hidden=False):
-    if 'user' not in session.data:
-        raise Exception('Please login first')
+    checkuser()
         
     global root
     fpath = fullpath(path)
@@ -119,9 +126,8 @@ def read(path='', hidden=False):
 
 
 @app.post('/write')
-def write(path, override):
-    if not app.session.data['user']:
-        raise Exception('Please login first')
+def write(path, overwrite):
+    checkuser()
         
     fpath = fullpath(path)
     
@@ -132,8 +138,7 @@ def write(path, override):
 
 @app.post('/append')
 def append(path):
-    if not app.session.data['user']:
-        raise Exception('Please login first')
+    checkuser()
         
     fpath = fullpath(path)
     
@@ -143,45 +148,51 @@ def append(path):
     file.close()
     
 @app.post('/upload')
-def upload(path, override):
-    if 'user' not in session.data:
-        raise Exception('Please login first')
+def upload(path, overwrite=True):
+    checkuser()
         
     fpath = fullpath(path)
-    for name, up in bottle.request.files.items():
-        file = open(os.path.join(fpath, name), mode='w')
-        file.write(up)
-        file.close()
+    print(bottle.request.files)
+    for up in bottle.request.files.getall('upload'):
+        up.save(fpath,overwrite=overwrite)
 
 @app.post('/mkdir')
 def mkdir(path):
-    if 'user' not in session.data:
-        raise Exception('Please login first')
+    checkuser()
         
     fpath = fullpath(path)
     os.makedirs(fpath, exist_ok=True)
     
+
+@app.post('/mkfile')
+def mkfile(path):
+    checkuser()
+        
+    fpath = fullpath(path)
+    if os.path.exists(fpath):
+        raise Exception('File ' + path + ' already exists')
+    f = open(fpath, 'w')
+    f.close();
+    
+
 @app.post('/move')
-def move(path, to, override=True):
-    if 'user' not in session.data:
-        raise Exception('Please login first')
+def move(path, to, overwrite=True):
+    checkuser()
         
     fpath = fullpath(path)
     fto = fullpath(to)
     shutil.move(fpath, fto)
 
 @app.post('/rename')
-def rename(path, into, override=True):
-    if 'user' not in session.data:
-        raise Exception('Please login first')
+def rename(path, into, overwrite=True):
+    checkuser()
         
     fpath = fullpath(path)
     os.rename(fpath, into)
 
 @app.post('/copy')
-def copy(path, to, override=True):
-    if 'user' not in session.data:
-        raise Exception('Please login first')
+def copy(path, to, overwrite=True):
+    checkuser()
         
     fpath = fullpath(path)
     fto = fullpath(to)
@@ -191,8 +202,7 @@ def copy(path, to, override=True):
 
 @app.post('/delete')
 def delete(path):
-    if 'user' not in session.data:
-        raise Exception('Please login first')
+    checkuser()
         
     fpath = fullpath(path)
     shutil.rmtree(fpath)

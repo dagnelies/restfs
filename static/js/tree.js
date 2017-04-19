@@ -71,7 +71,7 @@ $(function() {
 				success([{id:'/',text:'/',state:'closed'}]);
 				
 				var root = $(this).tree('find', '/').target;
-				$(this).tree('select', root);
+				//$(this).tree('select', root);
 				$(this).tree('expand', root);
 				
 				return;
@@ -82,13 +82,15 @@ $(function() {
 				var nodes = [];
 				for(var i=0; i<files.length; i++) {
 					var f = files[i];
-					if( !f.is_directory )
+					//if( !f.is_directory )
+					if( f.type != 'dir' )
 						continue;
 					
 					var n = {
 						id: window.escape(data.path + '/' + f.name),
 						text: f.name,
-						state: (f.is_directory ? "closed" : "open")
+						//state: (f.is_directory ? "closed" : "open")
+						state: (f.type == 'dir' ? "closed" : "open")
 					};
 					nodes.push(n);
 				}
@@ -128,7 +130,6 @@ $(function() {
 			console.log(source);
 			console.log(target);
 		},
-		
 		
 		onLoadSuccess: function(node, data){
 			console.log('dir_tree: onLoadSuccess');
