@@ -49,6 +49,9 @@ function openFile(name) {
 
 function selectItems(items) {
 
+	$("#save-button").removeClass("c6");
+	$("#save-button").prop('disabled', true);
+	
 	current_selection = items;
 	$('#status').html(items.length + ' files selected');
 	

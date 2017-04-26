@@ -13,7 +13,7 @@ img {
 /* HEADER */
 
 #header {
-	background-color: #eee;
+	/* background-color: #eee; */
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -24,6 +24,12 @@ img {
 	padding: 5px;
 }
 
+
+/* active button */
+
+.active {
+	background-color: blue;
+}
 /* title & logo */
 
 .logo {
@@ -46,6 +52,9 @@ img {
 	transition: background-color ease 0.5s;
 }
 
+.logo-link {
+	text-decoration: none;
+}
 .logo-link:hover > span {
 	background-color: #0092DC;
 }

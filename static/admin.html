@@ -6,6 +6,8 @@
 	<link rel="stylesheet" type="text/css" href="libs/easyui/themes/gray/easyui.css">
 	<link rel="stylesheet" type="text/css" href="libs/easyui/themes/icon.css">
 	<link rel="stylesheet" type="text/css" href="libs/easyui/themes/mobile.css">
+	<link rel="stylesheet" type="text/css" href="libs/easyui/themes/color.css">
+	
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	
 	<script type="text/javascript" src="libs/easyui/jquery.min.js"></script>
@@ -58,6 +60,17 @@
 		        If you like it, consider a small donation! ...and get rid of this annoying ad. Thanks.
 		    </div>
 		    
+			<div id="options-dlg" class="easyui-dialog" title="Options" modal="true" closed="true" style="width:50%;height:50%;padding:10px">
+				<select class="easyui-combobox" label="Theme" style="width:100%" editable="false" panelHeight="auto" onSelect="changeTheme" onChange="changeTheme">
+					<option>black</option>
+					<option>bootstrap</option>
+					<option>default</option>
+					<option>gray</option>
+					<option>material</option>
+					<option>metro</option>
+				</select>
+		    </div>
+			
 		</div>
 	<div class="easyui-layout" style="width:100%;height:100%;">
 		<div id="header" data-options="region:'north', border:false">
@@ -88,12 +101,20 @@
 				<span class="title">Online FTP</span>
 			</a>
   			<span>
-				<a class="easyui-linkbutton easyui-tooltip" title="Options"><img src="img/fatcow/gears.png" /></a>
+				<button class="easyui-linkbutton easyui-tooltip" title="Options" onclick="$('#options-dlg').dialog('open');"><img src="img/fatcow/gears.png" /></button>
 				<button class="easyui-linkbutton easyui-tooltip" title="Disconnect"><img src="img/fatcow/door_in.png" /></button>
 			</span>
 		</div>
 		<div data-options="region:'west',split:true" title="user@some-ftp-server.com" collapsible=false style="width:20%;min-width:200px;">
 			<ul id="dir_tree" onkeypress="console.log(event)"></ul>
+			<p><a href="#" class="easyui-linkbutton c1" style="width:100%">Button1</a></p>
+            <p><a href="#" class="easyui-linkbutton c2" style="width:100%">Button2</a></p>
+            <p><a href="#" class="easyui-linkbutton c3" style="width:100%">Button3</a></p>
+            <p><a href="#" class="easyui-linkbutton c4" style="width:100%">Button4</a></p>
+            <p><a href="#" class="easyui-linkbutton c5" style="width:100%">Button5</a></p>
+            <p><a href="#" class="easyui-linkbutton c6" style="width:100%">Button6</a></p>
+            <p><a href="#" class="easyui-linkbutton c7" style="width:100%">Button7</a></p>
+            <p><a href="#" class="easyui-linkbutton c8" style="width:100%">Button8</a></p>
 		</div>
 		<div data-options="region:'center'">
 			<div class="easyui-tabs" data-options="fit:true,border:false,tabHeight:35">
@@ -132,7 +153,7 @@
 			<div id="editor" hidden style="height:100%;"></div>
 			
 			<footer>
-				<button class="easyui-linkbutton"  style="width:100%;height:35px;" iconCls="icon-save">Save</button>
+				<button class="easyui-linkbutton"  style="width:100%;height:35px;" id="save-button" iconCls="icon-save">Save</button>
 			</footer>
 	        <!-- footer>
 	        <div class="m-buttongroup" style="width:100%">
@@ -141,7 +162,7 @@
 	        </div>
 	        </footer-->
 		</div>
-		<div data-options="region:'south',split:true" border=false style="height:35px; background-color:#eee; padding: 5px 10px 10px 10px;">
+		<div data-options="region:'south',split:true" border=false style="height:35px; padding: 5px 10px 10px 10px;">
 			<span style="float:right">Powered by online-ftp.net</span>
 			<span id="status">Initializing...</span>
 		</div>

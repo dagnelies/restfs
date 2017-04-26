@@ -13,6 +13,11 @@ $(function() {
 	editor = ace.edit("editor");
 	//editor.setTheme("ace/theme/monokai");
 	modelist = ace.require("ace/ext/modelist");
+	editor.getSession().on('change', function(e) {
+		$("#save-button").addClass("c6");
+		$("#save-button").prop('disabled', false);
+	});
+	changeTheme('black');
 });
 
 
@@ -31,3 +36,9 @@ window.setInterval(keepAlive, 1000 * 60);
 
 //window.setInterval(showDonation, 1000 * 600);
 
+
+function changeTheme(theme){
+	console.log('Changing theme: ' + theme);
+	var link = $('head').find('link:first');
+	link.attr('href', 'libs/easyui/themes/' + theme + '/easyui.css');
+}

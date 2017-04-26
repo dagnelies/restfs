@@ -263,7 +263,6 @@ function showEditor(path, content) {
   
   editor.container.hidden = false;
   editor.setValue(content, -1); // -1 to move the cursor at the start of file
-  
 }
 
 function addDir() {
