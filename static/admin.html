@@ -61,7 +61,7 @@
 		    </div>
 		    
 			<div id="options-dlg" class="easyui-dialog" title="Options" modal="true" closed="true" style="width:50%;height:50%;padding:10px">
-				<select class="easyui-combobox" label="Theme" style="width:100%" editable="false" panelHeight="auto" onSelect="changeTheme" onChange="changeTheme">
+				<select class="easyui-combobox" label="Theme" style="width:100%" editable="false" panelHeight="auto" data-options="{onSelect:changeTheme,onChange:changeTheme}">
 					<option>black</option>
 					<option>bootstrap</option>
 					<option>default</option>
